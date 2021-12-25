@@ -35,7 +35,7 @@ release:
 	$(CC) $(CFLAGS) -c -o $(OBJDIR)/$(notdir $@) $^
 
 app: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJDIR)/*.o -o $(BINDIR)/shell-$(TARGET)
+	$(CC) $(CFLAGS) $(OBJS) -o $(BINDIR)/shell-$(TARGET)
 
 clean:
 	@echo "******* Starting Cleaning *******"
