@@ -1,7 +1,7 @@
 CC				=gcc
 
 SRCS			=$(wildcard src/*.c)
-OBJS			=$(SRCS:%.c=%.o)
+OBJS			=$(SRCS:src/%.c=obj/%.o)
 
 OBJDIR		=./obj
 BINDIR		=./bin
