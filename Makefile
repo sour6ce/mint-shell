@@ -5,6 +5,7 @@ CC				=gcc
 SRCS			=$(wildcard src/*.c)
 OBJS			=$(SRCS:src/%.c=obj/%.o)
 
+SRCDIR		=./src
 OBJDIR		=./obj
 BINDIR		=./bin
 
@@ -33,7 +34,7 @@ release:
 	@echo "* Release Build Ended *"
 	@echo "***********************"
 
-%.o : %.c
+$(OBJDIR)/%.o : $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c -o $(OBJDIR)/$(notdir $@) $^
 
 app: $(OBJS)
