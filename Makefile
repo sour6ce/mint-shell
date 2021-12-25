@@ -1,3 +1,5 @@
+.PHONY: all debug release clean app
+
 CC				=gcc
 
 SRCS			=$(wildcard src/*.c)
@@ -31,7 +33,7 @@ release:
 	@echo "* Release Build Ended *"
 	@echo "***********************"
 
-%.o:%.c
+%.o : %.c
 	$(CC) $(CFLAGS) -c -o $(OBJDIR)/$(notdir $@) $^
 
 app: $(OBJS)
