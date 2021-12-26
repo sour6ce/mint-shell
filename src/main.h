@@ -1,6 +1,7 @@
 #include "commons.h"
 #include "types.h"
 #include "cmdreadline.h"
+#include "lklist.h"
 
 #include <sys/types.h>
 #include <sys/wait.h>

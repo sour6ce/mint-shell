@@ -107,6 +107,15 @@ cmd_handler execute(cmd *command, int in_fd, int out_fd) {
     return h; //Return the handler, complex or not
 }
 
+void print_values(size_t i, node *n) {
+    printf("[%d]=%d\n",i,*((int *)(n->data)));
+}
+
+void dupby2(size_t i, node *n) {
+    if (i%2) return;
+    *(int*)(n->data)*=2;
+}
+
 int main(int argc, char *argv[]) {
     #pragma region Old Execute Tests
     // cmd test1;
@@ -153,47 +162,78 @@ int main(int argc, char *argv[]) {
     #pragma endregion
 
     #pragma region Old Input Tests
-    char s1[]="Hello ";
-    char s2[]="Wouddo";
+    // char s1[]="Hello ";
+    // char s2[]="Wouddo";
 
-    size_t s3len=0;
+    // size_t s3len=0;
 
-    char *s3=strpaste(s1,s2,&s3len);
+    // char *s3=strpaste(s1,s2,&s3len);
 
-    printf("The result string is: \"%s\" and it has a size of: %d bytes.\n",s3,s3len);
+    // printf("The result string is: \"%s\" and it has a size of: %d bytes.\n",s3,s3len);
 
-    char s4[]="Semato";
+    // char s4[]="Semato";
 
-    char *s5,*s6;
+    // char *s5,*s6;
 
-    strpeck(s4,&s5,&s6,2);
+    // strpeck(s4,&s5,&s6,2);
 
-    printf("\"%s\" was pecked into: \"%s\" and \"%s\".\n",s4,s5,s6);
+    // printf("\"%s\" was pecked into: \"%s\" and \"%s\".\n",s4,s5,s6);
 
-    char*s7=strinsert(s4," Mr. ",0);
+    // char*s7=strinsert(s4," Mr. ",0);
 
-    printf("Insert at the start: \"%s\".\n",s7);
+    // printf("Insert at the start: \"%s\".\n",s7);
 
-    char*s8=strinsert(s3,s7,5);
+    // char*s8=strinsert(s3,s7,5);
 
-    printf("Insert in middle: \"%s\".\n",s8);
+    // printf("Insert in middle: \"%s\".\n",s8);
 
-    char*s9=strinsert(s8,"!",strlen(s8));
+    // char*s9=strinsert(s8,"!",strlen(s8));
 
-    printf("Insert at last position: \"%s\".\n",s9);
+    // printf("Insert at last position: \"%s\".\n",s9);
 
-    char*s10;
+    // char*s10;
     
-    strpeck(s4,&s10,NULL,strlen(s4));
+    // strpeck(s4,&s10,NULL,strlen(s4));
 
-    printf("Failed peck?: \"%s\".\n",s10);
+    // printf("Failed peck?: \"%s\".\n",s10);
 
-    int pass=3;
+    // int pass=3;
 
-    for (;pass>0; pass--) {
-        char*line;
-        line=readline(stdin);
-        printf("Writed: \"%s\".\n",line);
+    // for (;pass>0; pass--) {
+    //     char*line;
+    //     line=readline(stdin);
+    //     printf("Writed: \"%s\".\n",line);
+    // }
+    #pragma endregion
+
+    #pragma region Linked List Tests
+    LKLIST(list);
+
+    for (int i=1; i<=10 ;i++) {
+        int *val=NEW(int,1);
+        *val=i;
+        lkins(&list,i,val);
     }
+    printf("List created.\n");
+    lkfor(&list,print_values);
+    lkrm(&list,2);
+    printf("Third value removed.\n");
+    lkfor(&list,print_values);
+    int start=25,mid=81;
+    lkins(&list,0,&start);
+    printf("Added %d at start.\n",start);
+    lkfor(&list,print_values);
+    lkins(&list,9,&mid);
+    printf("Added %d at 9th position (should be the previous to the last one).\n",mid);
+    lkfor(&list,print_values);
+    lkrm(&list,25);
+    printf("The last value should be deleted.\n");
+    lkfor(&list,print_values);
+    lkrm(&list,-1);
+    printf("The first value should be deleted.\n");
+    lkfor(&list,print_values);
+    lkfor(&list,dupby2);
+    printf("Final changes.\n");
+    lkfor(&list,print_values);
     #pragma endregion
 }
