@@ -105,12 +105,25 @@ void *lkrm(lklist *list, size_t index) {
     return data;
 }
 
+void __freedata(size_t index, node *node) {
+    free(node->data);
+}
+
 void lkfor(lklist *list, void fn(size_t,node*)) {
     node *actual=(*list).first;
     size_t size=0;
     while (actual!=NULL) {
+        node *next=actual->next;
         fn(size,actual);
-        actual=actual->next;
+        actual=next;
         size++;
+    }
+}
+
+void lkfree(lklist *list, BOOL data) {
+    if (data) lkfor(list,__freedata);
+    while (!lkisempty(list))
+    {
+        lkquit(list);
     }
 }

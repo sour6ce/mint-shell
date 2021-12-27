@@ -38,10 +38,10 @@ size_t lklen(lklist *list);
 node *lkndat(lklist *list, size_t index);
 
 //Returns true if the list is empty
-#define lkisempty(list) ((list).first==(list).last && (list).last==NULL)
+#define lkisempty(listptr) ((*list).first==(*list).last && (*list).last==NULL)
 
 //Return true if the list has only one element
-#define lkhasone(list) ((list).first==(list).last && (list).last!=NULL)
+#define lkhasone(listptr) ((*list).first==(*list).last && (*list).last!=NULL)
 
 //Inserts a value in the position given.
 void lkins(lklist *list, size_t index, void * value);
@@ -53,5 +53,9 @@ void *lkrm(lklist *list, size_t index);
 //The function must recieve two arguments, the index of the node in 
 //the linked list and the node itself. It's pretty fast.
 void lkfor(lklist *list, void fn(size_t,node*));
+
+//Erase every node of the list safely and is data is true free memory of
+//data stored.
+void lkfree(lklist *list, BOOL data);
 
 #endif

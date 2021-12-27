@@ -13,6 +13,9 @@
 
 #define CMD_CHAINEDRIGHT 32
 
+#define CMD_CONDITIONAL 64
+#define CMD_ELSECOND 128
+
 //Chain type
 #define CMD_CHAIN_NORMAL 1
 #define CMD_CHAIN_AND 2
@@ -34,8 +37,19 @@ typedef struct __cmd {
     //Chain
     short chain_type;
     struct __cmd *chain;
-        
+
+    //Conditional
+    struct __cmd *conditioncmd;
+    struct __cmd *thencmd;
+    struct __cmd *elsecmd;
 } cmd;
+
+//Macro for initialize cmd struct
+#define CMD(name) cmd name = {0,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL}
+
+//Macro for initialize cmd struct and get pointer
+#define CMDP(name) cmd *name=NEW(cmd,1); CMD(__##name); (* name)=__##name
+
 
 //Handler for a running process
 typedef struct __cmd_handler

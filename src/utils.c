@@ -8,6 +8,19 @@ size_t charfind(char *str,size_t start,size_t n,char c,BOOL order) {
     }
     return n;
 }
+
+size_t charfindm(char *str,size_t start,size_t n,char *cs,BOOL order) {
+    size_t charslen=strlen(cs);
+    for (size_t i = (order)? n-1 : start; (order)? i>start : i < n; (order)? i-- : i++) {
+        for (int k=0; k < charslen ;k++) {
+            if (str[i]==cs[k]) {
+                return i;
+            }
+        }
+    }
+    return n;
+}
+
 char * strpaste(char *first,char*second, size_t *len) {
     size_t sz=0;
 
@@ -34,10 +47,10 @@ char * strpaste(char *first,char*second, size_t *len) {
     return result;
 }
 void strpeck(char*str,char**first,char**second,size_t pos) {
-    size_t total_size=strlen(str);
+    size_t total_size=strlen(str)+1;
 
     if (first!=NULL) {
-        *first=malloc(pos+1);
+        (*first)=malloc(MAX(MIN(pos+1,total_size),1));
         for (size_t i = 0; i < pos; i++)
         {
             (*first)[i]=str[i];
@@ -46,8 +59,8 @@ void strpeck(char*str,char**first,char**second,size_t pos) {
     }
     if (second!=NULL)
     {
-        *second=malloc(total_size-pos+1);
-        for (size_t i = pos; i < total_size; i++)
+        (*second)=malloc(total_size-(MAX(MIN(pos+1,total_size),1)));
+        for (size_t i = MAX(pos,0); i < total_size; i++)
         {
             (*second)[i-pos]=str[i];
         }
@@ -74,6 +87,23 @@ void strrep(char*str,size_t n,char c, char r) {
             str[i]=r;
         }
     }
+}
+
+void strrev(char *str,size_t n) {
+    size_t len=strlen(str);
+    n=MAX(0,MIN(n,len));
+    for (size_t i = 0; i < n/2; i++)
+    {
+        char temp=str[i];
+        str[i]=str[n-i-1];
+        str[n-i-1]=temp;
+    }
+}
+
+char *strsub(char *str, size_t n) {
+    char *new;
+    strpeck(str,&new,NULL,n);
+    return new;
 }
 
 int checkp(cmd_handler h, BOOL hang) {
