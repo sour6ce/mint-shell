@@ -3,6 +3,46 @@
 void init() {
     
 }
+void loop() {
+    while (TRUE)
+    {
+        //Read the input
+        char *line=readline(stdin);
+
+        //TODO: Implement update_history(char*)
+        //update_history(line)
+
+        //Parse the line of the input and get information
+        //of how to execute
+        cmd *main_cmd=parse(line);
+
+        //Execute the command line
+        cmd_handler *h=NEW(cmd_handler,1);
+        h->pid=-1;
+        h->complex=0;
+        h->cmd_data=NULL;
+        *h=execute(main_cmd, STDIN_FILENO, STDOUT_FILENO);
+
+        //Check if errored
+        if (h->pid==-1) {
+            printf("Invalid command line.\n");
+        } else {
+            //Check if is builtin
+            if (h->pid!=0)
+                //Check if is ment to be background
+                if (h->cmd_data->options & CMD_BACKGROUND) {
+                    //TODO: Implement addjob(cmd_handler*)
+                    //addjob(h);
+                } else
+                    waitpid(h->pid, NULL, 0);
+                    //TODO: Implement freecmd(cmd*)
+                    //freecmd(main_cmd)
+                    free(h);
+        }
+
+        free(line);
+    }
+}
 cmd_handler execute(cmd *command, int in_fd, int out_fd) {
     cmd_handler h;
     h.pid=0;
@@ -107,11 +147,11 @@ cmd_handler execute(cmd *command, int in_fd, int out_fd) {
     return h; //Return the handler, complex or not
 }
 
-void print_values(size_t i, node *n) {
+void __print_values(size_t i, node *n) {
     printf("[%d]=%d\n",i,*((int *)(n->data)));
 }
 
-void dupby2(size_t i, node *n) {
+void __dupby2(size_t i, node *n) {
     if (i%2) return;
     *(int*)(n->data)*=2;
 }
@@ -207,33 +247,100 @@ int main(int argc, char *argv[]) {
     #pragma endregion
 
     #pragma region Linked List Tests
-    LKLIST(list);
+    // LKLIST(list);
 
-    for (int i=1; i<=10 ;i++) {
-        int *val=NEW(int,1);
-        *val=i;
-        lkins(&list,i,val);
-    }
-    printf("List created.\n");
-    lkfor(&list,print_values);
-    lkrm(&list,2);
-    printf("Third value removed.\n");
-    lkfor(&list,print_values);
-    int start=25,mid=81;
-    lkins(&list,0,&start);
-    printf("Added %d at start.\n",start);
-    lkfor(&list,print_values);
-    lkins(&list,9,&mid);
-    printf("Added %d at 9th position (should be the previous to the last one).\n",mid);
-    lkfor(&list,print_values);
-    lkrm(&list,25);
-    printf("The last value should be deleted.\n");
-    lkfor(&list,print_values);
-    lkrm(&list,-1);
-    printf("The first value should be deleted.\n");
-    lkfor(&list,print_values);
-    lkfor(&list,dupby2);
-    printf("Final changes.\n");
-    lkfor(&list,print_values);
+    // for (int i=1; i<=10 ;i++) {
+    //     int *val=NEW(int,1);
+    //     *val=i;
+    //     lkins(&list,i,val);
+    // }
+    // printf("List created.\n");
+    // lkfor(&list,print_values);
+    // lkrm(&list,2);
+    // printf("Third value removed.\n");
+    // lkfor(&list,print_values);
+    // int start=25,mid=81;
+    // lkins(&list,0,&start);
+    // printf("Added %d at start.\n",start);
+    // lkfor(&list,print_values);
+    // lkins(&list,9,&mid);
+    // printf("Added %d at 9th position (should be the previous to the last one).\n",mid);
+    // lkfor(&list,print_values);
+    // lkrm(&list,25);
+    // printf("The last value should be deleted.\n");
+    // lkfor(&list,print_values);
+    // lkrm(&list,-1);
+    // printf("The first value should be deleted.\n");
+    // lkfor(&list,print_values);
+    // lkfor(&list,dupby2);
+    // printf("Final changes.\n");
+    // lkfor(&list,print_values);
     #pragma endregion
+
+    #pragma region ParsingTest
+    // LKLIST(prstr);
+
+    // char test_rev[]="Mirella";
+    // strrev(test_rev,strlen(test_rev));
+
+    // printf("In reverse turns out to be: \"%s\".\n",test_rev);
+
+    // lkappend(&prstr,"H\"elp Tutmosis");
+    // int *bal=mapquote(prstr.first->data);
+
+    // printf("%s\n",prstr.first->data);
+    // for (size_t i = 0; i < strlen(prstr.first->data); i++)
+    // {
+    //     printf("%d ",bal[i]);
+    // }
+    // printf("\n");
+
+    // free(bal);
+    // lkappend(&prstr," if true then ls | grep \"if\" else ls | grep \"end\" end");
+
+    // int3 *cond=mapcond(prstr.last->data);
+    // printf("%s\n",prstr.last->data);
+    // for (size_t i = 0; i < strlen(prstr.last->data)+1; i++)
+    // {
+    //     printf("%d ",cond[i][0]);
+    // }
+    // printf("\n");
+    // for (size_t i = 0; i < strlen(prstr.last->data)+1; i++)
+    // {
+    //     printf("%d ",cond[i][1]);
+    // }
+    // printf("\n");
+    // for (size_t i = 0; i < strlen(prstr.last->data)+1; i++)
+    // {
+    //     printf("%d ",cond[i][2]);
+    // }
+    // printf("\n");
+
+    // printf("Next the ranges in \"%s\":\n",prstr.last->data);
+    // range _if={0,0};
+    // range _else={0,0};
+    // range _then={0,0};
+    // rangecond(cond,strlen(prstr.last->data)+1,_if,_then,_else);
+    // printf("If range:%d,%d starting at: \"%s\".\n :\n",
+    //     _if[0],_if[1],prstr.last->data+_if[0]);
+    // printf("Then range:%d,%d starting at: \"%s\".\n :\n",
+    //     _then[0],_then[1],prstr.last->data+_then[0]);
+    // printf("Else range:%d,%d starting at: \"%s\".\n :\n",
+    //     _else[0],_else[1],prstr.last->data+_else[0]);
+    
+    // printf("\n");
+    
+    // lkquit(&prstr); lkquit(&prstr);
+    // char s1[]="This is \"unfair & unintended\" & I am going to make it.\n";
+
+    // printf("catch the &: %s\n",tokfind(s1,strlen(s1),"&"));
+
+    // char s2[]="Find my mom who is also your mom \"you bitch\".";
+
+    // printf("Finded \"you\" in reverse in the sentence:\n\"%s\"\n->\"%s\"\n",s2,tokfindr(s2,strlen(s2),"you"));
+    // printf("Finded \"mom\" in reverse in the sentence:\n\"%s\"\n->\"%s\"\n",s2,tokfindr(s2,strlen(s2),"mom"));
+
+    #pragma endregion
+
+    loop();
 }
