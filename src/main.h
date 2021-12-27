@@ -1,5 +1,6 @@
 #include "commons.h"
 #include "types.h"
+#include "cmdexecute.h"
 #include "cmdreadline.h"
 #include "cmdparse.h"
 #include "lklist.h"
