@@ -49,22 +49,24 @@ char * strpaste(char *first,char*second, size_t *len) {
 void strpeck(char*str,char**first,char**second,size_t pos) {
     size_t total_size=strlen(str)+1;
 
+    pos=(MAX(1,MIN(pos+1,total_size)));
+
     if (first!=NULL) {
-        (*first)=malloc(MAX(MIN(pos+1,total_size),1));
+        (*first)=malloc(pos);
         for (size_t i = 0; i < pos; i++)
         {
             (*first)[i]=str[i];
         }
-        (*first)[pos]='\00';
+        (*first)[pos-1]='\00';
     }
     if (second!=NULL)
     {
-        (*second)=malloc(total_size-(MAX(MIN(pos+1,total_size),1)));
+        (*second)=malloc(total_size-pos);
         for (size_t i = MAX(pos,0); i < total_size; i++)
         {
             (*second)[i-pos]=str[i];
         }
-        (*second)[total_size-pos]='\00';
+        (*second)[total_size-pos-1]='\00';
     }
 }
 char *strinsert(char*first,char*second,size_t pos) {

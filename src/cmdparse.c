@@ -208,6 +208,7 @@ void chaintoken(char *line, size_t n, char **index, int *type) {
         or_pos==NULL) {
             if (index!=NULL) (*index)=NULL;
             if (type!=NULL) (*type)=0;
+            return;
     }
 
     char *pos=MIN(MIN(DIFNULL(scolon_pos,line+n),DIFNULL(and_pos,line+n)),DIFNULL(or_pos,line+n));
@@ -277,10 +278,10 @@ void __endlinize(char *line, size_t n) {
 // }
 
 int __catch_red(char *line,char *copy, char*token, char*prev_token) {
-    line+=(prev_token+strlen(prev_token))-copy;
-    char *_in=tokfindr(line,token-line,TOK_IN);
-    char *_hout=tokfindr(line,token-line,TOK_HARDOUT);
-    char *_out=tokfindr(line,token-line,TOK_OUT);
+    if (prev_token!=NULL) line+=(prev_token+strlen(prev_token))-copy;
+    char *_in=tokfindr(line,token-copy,TOK_IN);
+    char *_hout=tokfindr(line,token-copy,TOK_HARDOUT);
+    char *_out=tokfindr(line,token-copy,TOK_OUT);
 
     if(_hout!=NULL) _out=_hout;
 
@@ -302,7 +303,38 @@ cmd *parse(char *line) {
     char *chain;
     chaintoken(line,line_size,&chain,&chain_type);
 
-    //Line is from a complex command with chain
+    int3 *map=mapcond(line);
+    range if_range, then_range, else_range;
+
+    int rr=rangecond(map,line_size,if_range,then_range,else_range);
+
+    if (rr!=-1) { //It's a conditional expression
+        char *ifline=strsub(line+if_range[0],if_range[1]-if_range[0]);
+        char *thenline=strsub(line+then_range[0],then_range[1]-then_range[0]);
+        char *elseline=NULL;
+
+        if (rr>0) elseline=strsub(line+else_range[0],else_range[1]-else_range[0]);
+
+        cmd *if_cmd=parse(ifline);
+        cmd *then_cmd=parse(thenline);
+        cmd *else_cmd=NULL;
+        if (rr>0) else_cmd=parse(elseline);
+
+        CMDP(condition);
+
+        condition->options=CMD_CONDITIONAL | ((rr>0)? CMD_ELSECOND : 0) | ((bg!=NULL)? CMD_BACKGROUND : 0);
+        condition->conditioncmd=if_cmd;
+        condition->thencmd=then_cmd;
+        if (rr>0) condition->elsecmd=else_cmd;
+
+        free(ifline);
+        free(thenline);
+        if (rr>0) free(elseline);
+
+        return condition;
+    }
+
+    //Line is from a complex not-conditional command with chain
     if (chain!=NULL) {
         char *left, *right;
         strpeck(line,&left,&right,chain-line);
@@ -332,45 +364,14 @@ cmd *parse(char *line) {
             left_cmd=parse(left); //Make a command out of the text left side the chain token
             right_cmd=parse(right_moved); //Make a command out of the right side
 
-            left_cmd->options^=(CMD_PIPEDRIGHT | (bg!=NULL)? CMD_BACKGROUND : 0);
+            left_cmd->options^=(CMD_PIPEDRIGHT | ((bg!=NULL)? CMD_BACKGROUND : 0 ));
             left_cmd->pipe=right_cmd; //Setup chain info
 
             free(left);
             free(right);
 
             return left_cmd;
-        } else { //Then it's a normal command... or an if
-            int3 *map=mapcond(line);
-            range if_range, then_range, else_range;
-
-            int rr=rangecond(map,line_size,if_range,then_range,else_range);
-
-            if (rr!=-1) { //It's a conditional expression
-                char *ifline=strsub(line+if_range[0],if_range[1]-if_range[0]);
-                char *thenline=strsub(line+then_range[0],then_range[1]-then_range[0]);
-                char *elseline=NULL;
-
-                if (rr>0) elseline=strsub(line+else_range[0],else_range[1]-else_range[0]);
-
-                cmd *if_cmd=parse(ifline);
-                cmd *then_cmd=parse(ifline);
-                cmd *else_cmd=NULL;
-                if (rr>0) else_cmd=parse(ifline);
-
-                CMDP(condition);
-
-                condition->options=CMD_CONDITIONAL | ((rr>0)? CMD_ELSECOND : 0) | ((bg!=NULL)? CMD_BACKGROUND : 0);
-                condition->conditioncmd=if_cmd;
-                condition->thencmd=then_cmd;
-                if (rr>0) condition->elsecmd=else_cmd;
-
-                free(ifline);
-                free(thenline);
-                if (rr>0) free(elseline);
-
-                return condition;
-            }
-
+        } else { //Then it's a normal command
             //Simple command code. Not so simple.
 
             // LKLIST(primallist);
@@ -398,20 +399,26 @@ cmd *parse(char *line) {
 
             //Erase in and out redirection from copy
             char *pos=tokfind(copy,line_size,TOK_IN);
-            while (pos!=NULL)
+            while (pos!=NULL) {
                 for (size_t i=0; i < TOK_IN_LEN ;i++)
                     pos[i]='\n';
+                pos=tokfind(copy,line_size,TOK_IN);
+            }
             pos=tokfind(copy,line_size,TOK_OUT);
-            while (pos!=NULL)
+            while (pos!=NULL) {
                 for (size_t i=0; i < TOK_OUT_LEN ;i++)
                     pos[i]='\n';
+                pos=tokfind(copy,line_size,TOK_OUT);
+            }
             pos=tokfind(copy,line_size,TOK_HARDOUT);
-            while (pos!=NULL)
+            while (pos!=NULL) {
                 for (size_t i=0; i < TOK_HARDOUT_LEN ;i++)
                     pos[i]='\n';
+                pos=tokfind(copy,line_size,TOK_HARDOUT);
+            }
 
             //Uses endline as token to split the arguments
-            char *prev=copy;
+            char *prev=NULL;
             char *token=strtok(copy,"\n");
             while (token!=NULL) {
                 char *arg=NULL;
