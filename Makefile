@@ -20,7 +20,7 @@ debug:
 	@echo "************************"
 	@echo "* Starting Debug Build *"
 	@echo "************************"
-	export CFLAGS="-g -DDEBUG -Wall" && export TARGET=debug && $(MAKE) app -j$(JOBS)
+	export CFLAGS="-ggdb3 -std=c11 -DDEBUG -Wall" && export TARGET=debug && $(MAKE) app -j$(JOBS)
 	@echo "*********************"
 	@echo "* Debug Build Ended *"
 	@echo "*********************"
@@ -29,7 +29,7 @@ release:
 	@echo "**************************"
 	@echo "* Starting Release Build *"
 	@echo "**************************"
-	export CFLAGS="-O2" && export TARGET=release && $(MAKE) app -j$(JOBS)
+	export CFLAGS="-O2 -std=c11" && export TARGET=release && $(MAKE) app -j$(JOBS)
 	@echo "***********************"
 	@echo "* Release Build Ended *"
 	@echo "***********************"
