@@ -1,8 +1,8 @@
 /*
 Common use macros and types for projects. C language.
  */
-#ifndef COMMONS_H
-#define COMMONS_H
+#ifndef _COMMONS_H
+#define _COMMONS_H
 
 //Alocate memory
 #define NEW(type,count) (type *)malloc(sizeof(type) * (count))

@@ -1,5 +1,5 @@
-#ifndef _CMD_READLINE_H
-#define _CMD_READLINE_H
+#ifndef _CMDREADLINE_H
+#define _CMDREADLINE_H
 
 #include "commons.h"
 #include "types.h"

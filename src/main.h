@@ -1,3 +1,6 @@
+#ifndef _MAIN_H
+#define _MAIN_H
+
 #include "commons.h"
 #include "types.h"
 #include "cmdexecute.h"
@@ -20,3 +23,5 @@ void init();
 void loop();
 //Execute command
 cmd_handler execute(cmd *command, int in_fd, int out_fd);
+
+#endif
