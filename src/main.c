@@ -28,16 +28,20 @@ void loop() {
             printf("Invalid command line.\n");
         } else {
             //Check if is builtin
-            if (h->pid!=0)
+            if (h->pid!=0) {
                 //Check if is ment to be background
                 if (h->cmd_data->options & CMD_BACKGROUND) {
                     //TODO: Implement addjob(cmd_handler*)
                     //addjob(h);
-                } else
+                } else {
                     waitpid(h->pid, NULL, 0);
                     //TODO: Implement freecmd(cmd*)
                     //freecmd(main_cmd)
                     free(h);
+                }
+            } else {
+                free(h);
+            }
         }
 
         free(line);
