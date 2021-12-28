@@ -12,7 +12,7 @@
 extern lklist history;
 
 //Expands to a condition with value true if the command line skips history.
-#define no_history(line) ((line)[0]==' ')
+#define no_history(line) ( ((line)[0]==' ') || ((line)[0]=='\0') )
 
 //Function to add a line to the history.
 void update_history(char *line);

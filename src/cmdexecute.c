@@ -120,6 +120,7 @@ cmd_handler execute(cmd *command, int in_fd, int out_fd) {
             }
         }
     } else {
+        if(command->argv[0]) return h;
         int bi=get_bi_index(command->argv[0]);
         if (bi!=-1) {
             int es=builtin[bi](command->argc,command->argv);
@@ -161,7 +162,8 @@ cmd_handler execute(cmd *command, int in_fd, int out_fd) {
             }
 
             if (execvp(command->argv[0],command->argv)<0) { //Execute the simple command
-                fprintf(stderr, "Could not execute the command %s. \n",command->argv[0]);
+                //fprintf(stderr, "Could not execute the command %s. \n",command->argv[0]);
+                exit(EXIT_FAILURE);
             }
         }
     }

@@ -44,6 +44,12 @@ void loop() {
         //of how to execute
         cmd *main_cmd=parse(line);
 
+        if (main_cmd->argv[0]==NULL) {
+            free(line),
+            freecmd(main_cmd);
+            continue;
+        }
+
         //Execute the command line
         cmd_handler *h=NEW(cmd_handler,1);
         h->pid=0;
@@ -53,7 +59,7 @@ void loop() {
 
         //Check if errored
         if (h->pid==0) {
-            printf("Invalid command line.\n");
+            fprintf(stderr, "Could not execute the command \"%s\".\n",line);
         } else {
             //Check if is builtin
             if (h->pid>0) {
