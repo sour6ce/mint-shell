@@ -192,6 +192,8 @@ int rangecond(int3 *map, size_t n,range if_range,range then_range, range else_ra
         else_range[0]=_else[0];
         then_range[1]=_else[0]-TOK_ELSE_LEN; //Change end to start of else
         else_range[1]=_else[1];
+    } else {
+        then_range[1]=_then[1];
     }
 
     return has_else;
