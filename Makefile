@@ -1,4 +1,4 @@
-.PHONY: all debug release clean app
+.PHONY: all debug release clean app mktree
 
 CC				=gcc
 
@@ -16,7 +16,7 @@ all: clean debug release
 	@echo "* Successfully built *"
 	@echo "**********************"
 
-debug:
+debug: mktree
 	@echo "************************"
 	@echo "* Starting Debug Build *"
 	@echo "************************"
@@ -25,7 +25,7 @@ debug:
 	@echo "* Debug Build Ended *"
 	@echo "*********************"
 
-release:
+release: mktree
 	@echo "**************************"
 	@echo "* Starting Release Build *"
 	@echo "**************************"
@@ -44,6 +44,10 @@ clean:
 	@echo "******* Starting Cleaning *******"
 	rm -rf $(OBJDIR)/* $(BINDIR)/*
 	@echo "******** Cleaning Ended *********"
+
+mktree:
+	mkdir -p $(OBJDIR)
+	mkdir -p $(BINDIR)
 
 #Dynamic
 %:
