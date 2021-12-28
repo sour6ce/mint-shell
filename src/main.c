@@ -28,6 +28,8 @@ void freecmd(cmd *c) {
 void loop() {
     while (TRUE)
     {
+        fflush(stdin);
+        fflush(stdout);
         char dir[512]; 
         getcwd(dir,512); //Get working directory
 
@@ -36,8 +38,7 @@ void loop() {
         //Read the input
         char *line=readline(stdin);
 
-        //TODO: Implement update_history(char*)
-        //update_history(line)
+        update_history(line);
 
         //Parse the line of the input and get information
         //of how to execute
@@ -64,14 +65,15 @@ void loop() {
                     waitpid(h->pid, NULL, 0);
                     //fflush(stdout);
                     freecmd(main_cmd);
-                    free(h);
                 }
             } else {
-                free(h);
             }
         }
+        free(h);
 
         free(line);
+        fflush(stdin);
+        fflush(stdout);
     }
 }
 

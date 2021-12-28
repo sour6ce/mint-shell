@@ -74,9 +74,6 @@ int rangecond(int3 *map, size_t n,range if_range,range then_range, range else_ra
 //Similar to charfindm.
 //size_t truetok(char *str, size_t start, size_t n,char *cs,int order);
 
-//Expands to a condition with value true if the command line skips history.
-#define no_history(line) ((line)[0]==' ')
-
 //Gets the length of the token according chain type
 #define chainsz(type) ((type)==CMD_CHAIN_OR)? TOK_CHAIN_OR_LEN :\
      ((type)==CMD_CHAIN_AND)? TOK_CHAIN_AND_LEN : TOK_CHAIN_NORMAL_LEN
