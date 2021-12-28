@@ -53,7 +53,7 @@ void strpeck(char*str,char**first,char**second,size_t pos) {
 
     if (first!=NULL) {
         (*first)=malloc(pos);
-        for (size_t i = 0; i < pos; i++)
+        for (size_t i = 0; i < pos-1; i++)
         {
             (*first)[i]=str[i];
         }
@@ -61,12 +61,12 @@ void strpeck(char*str,char**first,char**second,size_t pos) {
     }
     if (second!=NULL)
     {
-        (*second)=malloc(total_size-pos);
-        for (size_t i = MAX(pos,0); i < total_size; i++)
+        (*second)=malloc(total_size-pos+1);
+        for (size_t i = pos-1; i < total_size-1; i++)
         {
-            (*second)[i-pos]=str[i];
+            (*second)[i-pos+1]=str[i];
         }
-        (*second)[total_size-pos-1]='\00';
+        (*second)[total_size-pos]='\00';
     }
 }
 char *strinsert(char*first,char*second,size_t pos) {
