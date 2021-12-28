@@ -17,9 +17,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-//Initialize Shell
+//Initialize Shell.
 void init();
-//Main loop of th Shell
+//Free the command information allocated memory.
+void freecmd(cmd *c);
+//Main loop of th Shell.
 void loop();
 
 #endif

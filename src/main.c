@@ -3,6 +3,28 @@
 void init() {
     
 }
+void freecmd(cmd *c) {
+    if (c->conditioncmd!=NULL) freecmd(c->conditioncmd);
+    if (c->thencmd!=NULL) freecmd(c->thencmd);
+    if (c->elsecmd!=NULL) freecmd(c->elsecmd);
+
+    if(c->chain!=NULL) freecmd(c->chain);
+    else if(c->pipe!=NULL) freecmd(c->pipe);
+
+    if(c->extoutput!=NULL) free(c->extoutput);
+    if(c->extinput!=NULL) free(c->extinput);
+
+    if(c->argv!=NULL) {
+        for (size_t i = 0; i < c->argc; i++) {
+            if (c->argv[i]!=NULL) {
+                free((c->argv)[i]);
+            }
+        }
+        free (c->argv);
+    }
+
+    free(c);
+}
 void loop() {
     while (TRUE)
     {
@@ -41,8 +63,7 @@ void loop() {
                 } else {
                     waitpid(h->pid, NULL, 0);
                     //fflush(stdout);
-                    //TODO: Implement freecmd(cmd*)
-                    //freecmd(main_cmd)
+                    freecmd(main_cmd);
                     free(h);
                 }
             } else {
