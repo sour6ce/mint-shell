@@ -294,7 +294,21 @@ int __catch_red(char *line,char *copy, char*token, char*prev_token) {
 
 cmd *parse(char *line) {
     size_t line_size=strlen(line)+1;
-    char *bg=tokfindr(line,line_size,TOK_BACKGROUND);
+    char *bg=tokfindr(line,line_size-1,TOK_BACKGROUND);
+
+    if (bg!= NULL)
+    for (char *i = bg+TOK_BACKGROUND_LEN; i != line+line_size-1; i++) {
+        if(*i!=' ') {
+            bg=NULL;
+            break;
+        }
+    }
+    
+    if (bg!=NULL) {
+        for (size_t i = 0; i < TOK_BACKGROUND_LEN; i++) {
+            bg[i]=' ';
+        }
+    }
 
     // CMDP(left_cmd);
     // CMDP(right_cmd);
@@ -345,7 +359,7 @@ cmd *parse(char *line) {
         left_cmd=parse(left); //Make a command out of the text left side the chain token
         right_cmd=parse(right_moved); //Make a command out of the right side
 
-        left_cmd->options^=(CMD_CHAINEDRIGHT | (bg!=NULL)? CMD_BACKGROUND : 0);
+        left_cmd->options^=(CMD_CHAINEDRIGHT | ((bg!=NULL)? CMD_BACKGROUND : 0) );
         left_cmd->chain_type=chain_type;
         left_cmd->chain=right_cmd; //Setup chain info
 
@@ -448,6 +462,19 @@ cmd *parse(char *line) {
                 prev=token;
                 token=strtok(NULL,"\n");
             }
+
+            // char *bg=tokfindr(prev,strlen(prev),TOK_BACKGROUND);
+
+            // if (bg!=NULL) {
+            //     count--;
+            //     lkrm(&arglist,count);
+            //     if (bg!=prev) {
+            //         char *new_arg=NULL;
+            //         strpeck(prev,&new_arg,NULL, bg-prev);
+            //         free(prev);
+            //         lkappend(&arglist,new_arg);
+            //     }
+            // }
 
             char **args=NEW(char*,count+1);
             
