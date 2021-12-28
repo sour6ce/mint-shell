@@ -1,0 +1,11 @@
+El shell contiene todas las funcionalidades básicas.
+Al ejecutar el programa siempre se va a imprimir "my-prompt $".
+Ejecuta comandos e imprime sus salidas.
+Tiene el comando cd el cual cambia el directorio actual.
+Tiene los comandos de redirección de entrada y salida estandar:
+command > file: Toma la salida del comando y la almacena en file, sobreescribiendo esto sobre el contenido de file.
+command >> file: Toma la salida del comando y la almacena en file sin sobreescribir el contenido.
+command < file: Toma el contenido del file y lo usa como entrada del comando.
+Tiene tuberías:
+command1 | command2: La salida del comando 1 funciona como entrada del comando 2.
+Si aparece el caracter "#" el shell ignora todo desde este hasta el final de la línea.

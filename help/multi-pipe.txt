@@ -1,0 +1,1 @@
+El shel tiene la implementación de tuberías múltiples.

@@ -1,0 +1,6 @@
+El shell puede ejecutar expresiones condicionales con los operadores:
+if command1 then command2 end: Entre if y then debe aparecer un comando o una cadena de comandos, 
+si el exit status es 0 entonces ejecuta el comando 2, el cual termina al llegar a end.
+Teniendo el operador opcional "else" para el caso en que no se cumpla la primera condición 
+se ejecute el comando posterior al "else", quedando como ejemplo:
+if command1 then command2 else command3 end
