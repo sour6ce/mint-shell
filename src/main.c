@@ -7,9 +7,9 @@ void loop() {
     while (TRUE)
     {
         char dir[512]; 
-        getcwd(&dir,512); //Get working directory
+        getcwd(dir,512); //Get working directory
 
-        
+        printf ("%s $ ",dir); //Print wd at start of the line
 
         //Read the input
         char *line=readline(stdin);
