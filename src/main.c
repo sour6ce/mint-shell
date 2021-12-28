@@ -23,23 +23,24 @@ void loop() {
 
         //Execute the command line
         cmd_handler *h=NEW(cmd_handler,1);
-        h->pid=-1;
+        h->pid=0;
         h->complex=0;
         h->cmd_data=NULL;
         *h=execute(main_cmd, STDIN_FILENO, STDOUT_FILENO);
 
         //Check if errored
-        if (h->pid==-1) {
+        if (h->pid==0) {
             printf("Invalid command line.\n");
         } else {
             //Check if is builtin
-            if (h->pid!=0) {
+            if (h->pid>0) {
                 //Check if is ment to be background
                 if (h->cmd_data->options & CMD_BACKGROUND) {
                     //TODO: Implement addjob(cmd_handler*)
                     //addjob(h);
                 } else {
                     waitpid(h->pid, NULL, 0);
+                    //fflush(stdout);
                     //TODO: Implement freecmd(cmd*)
                     //freecmd(main_cmd)
                     free(h);
