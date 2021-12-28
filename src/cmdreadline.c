@@ -43,5 +43,6 @@ char *readline(FILE *input) {
         }
     } while (1);
     strrep(line,strlen(line),'\n',' ');
+    line[strlen(line)-1]='\0';
     return line;
 }

@@ -44,7 +44,7 @@ void loop() {
         //of how to execute
         cmd *main_cmd=parse(line);
 
-        if (main_cmd->argv[0]==NULL) {
+        if (!(main_cmd->options&CMD_CONDITIONAL) && main_cmd->argv[0]==NULL) {
             free(line),
             freecmd(main_cmd);
             continue;
@@ -59,7 +59,7 @@ void loop() {
 
         //Check if errored
         if (h->pid==0) {
-            fprintf(stderr, "Could not execute the command \"%s\".\n",line);
+            fprintf(stderr, "Invalid command: \"%s\".\n",line);
         } else {
             //Check if is builtin
             if (h->pid>0) {
