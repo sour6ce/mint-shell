@@ -21,7 +21,5 @@
 void init();
 //Main loop of th Shell
 void loop();
-//Execute command
-cmd_handler execute(cmd *command, int in_fd, int out_fd);
 
 #endif
