@@ -1,0 +1,6 @@
+El shell puede ejecutar procesos en el background y sacarlos hacia el foreground.
+Cuenta con el operador "&" y los comandos: "jobs" y "fg":
+command &: Ejecuta el comando en el background.
+jobs: Devuele una lista de todos los procesos que estan corriendo en el background.
+fg: Toma el proceso más reciente enviado al background y lo envía hacia el foreground.
+fg <pid>: Envía el proceso <pid> hacia el foreground.

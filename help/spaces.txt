@@ -1,0 +1,1 @@
+El shell permite cualquier cantidad de espacios entre comandos y parámetros.

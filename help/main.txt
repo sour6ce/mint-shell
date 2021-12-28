@@ -1,0 +1,28 @@
+Integrantes: Gabriel Hernández Rodríguez y Dennis Fiallo Muñoz
+
+Funcionalidades:
+basic: Funcionalidades básicas (3 puntos)
+multi-pipe: Multiples tuberías (1 punto)
+background: Ejecutar procesos en el background (0.5 puntos)
+spaces: Permite cualquier cantidad de espacios entre los comandos y parámetros (0.5 puntos)
+history: Historial de comandos (0.5 puntos)
+chain: Encadenar comandos (0.5 puntos)
+if: Expresiones condicionales (1 punto)
+multi-if: Múltiples condicionales en una sola línea (0.5 puntos)
+help: Imprime la ayuda (1 punto)
+
+Comandos built-in:
+cd: Cambia de directorio
+exit: Termina el shell
+jobs: Imprime una lista de todos los procesos que corren en el background
+fg: Envía procesos desde el background hacia el foreground
+history: Imprime una lista de los últimos 10 comandos ejecutados
+again: Vuelve a ejecutar un comando seleccionado de la historia
+true: Retorna 0
+false: Retorna 1
+if: Si la expresion if es TRUE se evalúa el comando que se encuentra después de then
+help: Muestra la ayuda
+(No se deben usar estos built-in dentro de sentencias if, chains o pipes, a exepción de "true" y "false")
+
+Total: 8.5 puntos
+

@@ -1,0 +1,4 @@
+El shell permite anidar operadores if uno dentro de otro.
+Cada if tendría su propio end.
+Ejemplo:
+if cmd1 then cmd2 else if cmd3 then cmd4 else cmd5 end end
