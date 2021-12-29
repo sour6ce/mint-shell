@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-#define BI_COUNT 6
+#define BI_COUNT 8
 
 int cd(int argc, char **argv);
 int cmd_exit(int argc, char**argv);
