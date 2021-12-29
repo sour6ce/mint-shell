@@ -4,13 +4,18 @@ int *mapquote(char *str){
     size_t len=strlen(str)+1;
     int *map=NEW(int,len);
     
-    BOOL literal=FALSE;
+    BOOL literals=FALSE;
+    BOOL literald=FALSE;
 
     for (size_t i = 0; i < len; i++) {
-        map[i]=literal;
-        if (str[i]=='\"' && ((i!=0)? str[i-1]!='\\':TRUE) ) {
-            literal=!literal;
-            if (literal==FALSE) map[i]=FALSE; 
+        map[i]=literald || literals;
+        if (str[i]=='\"' && !literals && ((i!=0)? str[i-1]!='\\':TRUE) ) {
+            literald=!literald;
+            if (literald==FALSE) map[i]=FALSE; 
+        }
+        if (str[i]=='\'' && !literald && ((i!=0)? str[i-1]!='\\':TRUE) ) {
+            literals=!literals;
+            if (literals==FALSE) map[i]=FALSE; 
         }
     }
 
@@ -235,7 +240,7 @@ void __endlinize(char *line, size_t n) {
 
     //Changes spaces for endlines and keep string literals untouched
     for (size_t i=0; i < n ;i++) {
-        if (quotes[i]==0 && (line[i]==' ' || line[i]=='\"')) {
+        if (quotes[i]==0 && (line[i]==' ' || line[i]=='\"' || line[i]=='\'')) {
             line[i]='\n';
         }
     }
@@ -280,7 +285,10 @@ void __endlinize(char *line, size_t n) {
 // }
 
 int __catch_red(char *line,char *copy, char*token, char*prev_token) {
-    if (prev_token!=NULL) line+=(prev_token+strlen(prev_token))-copy;
+    if (prev_token!=NULL) {
+        line+=(prev_token+strlen(prev_token))-copy;
+        copy+=strlen(prev_token);
+    }
     char *_in=tokfindr(line,token-copy,TOK_IN);
     char *_hout=tokfindr(line,token-copy,TOK_HARDOUT);
     char *_out=tokfindr(line,token-copy,TOK_OUT);
@@ -297,6 +305,9 @@ cmd *parse(char *line) {
     size_t line_size=strlen(line)+1;
     strpeck(temp,&line,NULL,line_size);
     char *bg=tokfindr(line,line_size-1,TOK_BACKGROUND);
+    if (bg!= NULL && bg!=line && *(bg-1)!=' ') {
+        bg=NULL;
+    }
 
     if (bg!= NULL)
     for (char *i = bg+TOK_BACKGROUND_LEN; i != line+line_size-1; i++) {
@@ -405,7 +416,7 @@ cmd *parse(char *line) {
 
             //Changes spaces for endlines and keep string literals untouched
             for (size_t i=0; i < line_size ;i++) {
-                if (quotes[i]==0 && (copy[i]==' ' || copy[i]=='\"')) {
+                if (quotes[i]==0 && (copy[i]==' ' || copy[i]=='\"' || copy[i]=='\'')) {
                     copy[i]='\n';
                 }
             }
