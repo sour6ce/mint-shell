@@ -52,7 +52,7 @@ void *lkrm(lklist *list, size_t index);
 //Execute the given function on every element of the linked list.
 //The function must recieve two arguments, the index of the node in 
 //the linked list and the node itself. It's pretty fast.
-void lkfor(lklist *list, void fn(size_t,node*));
+void lkfor(lklist *list, void fn(size_t*,node*));
 
 //Erase every node of the list safely and is data is true free memory of
 //data stored.
