@@ -62,15 +62,20 @@ int cmd_again(int argc, char**argv) {
 
     //Check if errored
     if (h->pid==0) {
-        printf("Invalid command line.\n");
+        fprintf(stderr, "Invalid command: \"%s\".\n",copy);
     } else {
-
         //Check if is builtin
         if (h->pid>0) {
             //Check if is ment to be background
             if (h->cmd_data->options & CMD_BACKGROUND) {
-                //TODO: Implement addjob(cmd_handler*)
-                //addjob(h);
+                char*copy_line=NULL;
+                strpeck(copy,&copy_line,NULL,strlen(copy));
+                
+                job *j=NEW(job,1);
+                j->pid=h->pid;
+                j->line=copy_line;
+                
+                addjob(j);
             } else {
                 waitpid(h->pid, NULL, 0);
                 //fflush(stdout);
@@ -79,8 +84,6 @@ int cmd_again(int argc, char**argv) {
         } else {
         }
     }
-    int stat=!good_exit(*h);
-
     free(h);
 
     return stat;
