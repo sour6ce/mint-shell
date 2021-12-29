@@ -109,12 +109,12 @@ void __freedata(size_t index, node *node) {
     free(node->data);
 }
 
-void lkfor(lklist *list, void fn(size_t,node*)) {
+void lkfor(lklist *list, void fn(size_t*,node*)) {
     node *actual=(*list).first;
     size_t size=0;
     while (actual!=NULL) {
         node *next=actual->next;
-        fn(size,actual);
+        fn(&size,actual);
         actual=next;
         size++;
     }
