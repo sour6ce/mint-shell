@@ -105,7 +105,7 @@ void *lkrm(lklist *list, size_t index) {
     return data;
 }
 
-void __freedata(size_t index, node *node) {
+void __freedata(size_t *index, node *node) {
     free(node->data);
 }
 
