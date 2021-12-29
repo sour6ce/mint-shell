@@ -20,6 +20,8 @@ int cmd_true(int argc, char**argv);
 int cmd_false(int argc, char**argv);
 int cmd_history(int argc, char**argv);
 int cmd_again(int argc, char**argv);
+int cmd_fg(int argc, char**argv);
+int cmd_jobs(int argc, char**argv);
 
 //List of built-in commands names.
 extern char *builtin_name[BI_COUNT];

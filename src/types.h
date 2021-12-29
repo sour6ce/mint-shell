@@ -65,6 +65,14 @@ typedef struct __cmd_handler
 
 } cmd_handler;
 
+//Job storing information
+typedef struct __job {
+    //Command line
+    char *line;
+    //Pid of the job
+    pid_t pid;
+} job;
+
 //Pointer to command function for built-ins
 typedef int(*bi_cmd)(int,char**);
 

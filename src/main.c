@@ -64,8 +64,14 @@ void loop() {
             if (h->pid>0) {
                 //Check if is ment to be background
                 if (h->cmd_data->options & CMD_BACKGROUND) {
-                    //TODO: Implement addjob(cmd_handler*)
-                    //addjob(h);
+                    char*copy_line=NULL;
+                    strpeck(line,&copy_line,NULL,strlen(line));
+                    
+                    job *j=NEW(job,1);
+                    j->pid=h->pid;
+                    j->line=copy_line;
+                    
+                    addjob(j);
                 } else {
                     waitpid(h->pid, NULL, 0);
                     //fflush(stdout);

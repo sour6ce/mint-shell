@@ -35,7 +35,7 @@ int cmd_again(int argc, char**argv) {
     }
     if (argc>1) {
         errno=0;
-        int val=strtol(argv[1],NULL,10);
+        long val=strtol(argv[1],NULL,10);
         if (errno==0) {
             c_i=MAX(MIN(c_i,val-1),0) ;
         }
@@ -47,7 +47,7 @@ int cmd_again(int argc, char**argv) {
 
     lkappend(&history,copy);
 
-    //NOTE:This code beneath is copied from man.c
+    //NOTE:This code beneath is copied from main.c
     //Parse the line of the input and get information
     //of how to execute
     cmd *main_cmd=parse(copy);
@@ -78,11 +78,70 @@ int cmd_again(int argc, char**argv) {
         } else {
         }
     }
-    int stat=good_exit(*h);
+    int stat=!good_exit(*h);
 
     free(h);
 
     return stat;
+}
+int cmd_fg(int argc, char**argv) {
+    size_t jlen=lklen(&jobs);
+    size_t i=jlen-1;
+    pid_t p=0;
+    // if (argc>1){
+    //     errno=0;
+    //     long a=strtol(argv[1],NULL,10);
+    //     if (errno==0) {
+    //         p=MAX(MIN(jlen-1,a-1),0) ;
+    //     }
+    // }
+
+    // job *j=lkndat(&jobs,i)->data;
+    // lkrm(&jobs,i);
+    // free(j->line);
+    // int status;
+    // cmd_handler temp={0,j->pid,NULL};
+    // return good_exit(temp);
+
+    if(argc>1) {
+        errno=0;
+        long a=strtol(argv[1],NULL,10);
+        if (errno==0) {
+            p=a;
+        }
+    }
+
+    node *actual=jobs.first;
+    size_t ind=0;
+    do {
+        if (((job*)actual->data)->pid==p)
+        {
+            free(((job*)actual->data)->line);
+            int status;
+            cmd_handler temp={0,((job*)actual->data)->pid,NULL};
+            lkrm(&jobs,ind);
+            ind--;
+            return good_exit(temp);
+        }
+        actual=actual->next;
+        ind++;
+    } while (actual!=NULL);
+    return EXIT_FAILURE;
+}
+void __print_jobs(size_t index, node *n) {
+    job j=*(job*)(n->data);
+    pid_t ended=waitpid(j.pid,NULL,WNOHANG);
+    if (ended) {
+        printf("[%d]:pid %d: DONE! %s\n",index+1,j.pid,j.line);
+        free(j.line);
+        lkrm(&jobs,index);
+    } else {
+        printf("[%d]:pid %d: %s\n",index+1,j.pid,j.line);
+    }
+}
+int cmd_jobs(int argcm, char**argv) {
+    lkfor(&jobs,__print_jobs);
+    return EXIT_SUCCESS;
 }
 char *builtin_name[BI_COUNT]={
     "cd",
@@ -90,7 +149,9 @@ char *builtin_name[BI_COUNT]={
     "true",
     "false",
     "history",
-    "again"
+    "again",
+    "fg",
+    "jobs"
 };
 bi_cmd builtin[BI_COUNT]={
     cd,
@@ -98,7 +159,9 @@ bi_cmd builtin[BI_COUNT]={
     cmd_true,
     cmd_false,
     cmd_history,
-    cmd_again
+    cmd_again,
+    cmd_fg,
+    cmd_jobs
 };
 
 int get_bi_index(char *cmd_name) {
