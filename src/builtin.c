@@ -8,9 +8,8 @@ void __kill_jobs(size_t *index, node *n) {
     job j=*(job*)(n->data);
     pid_t ended=waitpid(j.pid,NULL,WNOHANG);
     if (ended) {
-        printf("[%d]:pid %d: DONE! %s\n",index+1,j.pid,j.line);
         free(j.line);
-        lkrm(&jobs,index);
+        lkrm(&jobs,*index);
         (*index)--;
     } else {
         kill(j.pid,SIGKILL);
@@ -102,7 +101,7 @@ int cmd_again(int argc, char**argv) {
 }
 int cmd_fg(int argc, char**argv) {
     size_t jlen=lklen(&jobs);
-    size_t i=jlen-1;
+    //size_t i=jlen-1;
     pid_t p=0;
     // if (argc>1){
     //     errno=0;
@@ -134,7 +133,6 @@ int cmd_fg(int argc, char**argv) {
         if (((job*)actual->data)->pid==p)
         {
             free(((job*)actual->data)->line);
-            int status;
             cmd_handler temp={0,((job*)actual->data)->pid,NULL};
             lkrm(&jobs,ind);
             ind--;
@@ -145,20 +143,41 @@ int cmd_fg(int argc, char**argv) {
     } while (actual!=NULL);
     return EXIT_FAILURE;
 }
-void __print_jobs(size_t *index, node *n) {
-    job j=*(job*)(n->data);
-    pid_t ended=waitpid(j.pid,NULL,WNOHANG);
-    if (ended) {
-        printf("[%d]:pid %d: DONE! %s\n",index+1,j.pid,j.line);
-        free(j.line);
-        lkrm(&jobs,index);
-        (*index)--;
-    } else {
-        printf("[%d]:pid %d: %s\n",index+1,j.pid,j.line);
-    }
-}
+// void __print_jobs(size_t *index, node *n) {
+//     job j=*(job*)(n->data);
+//     pid_t ended=waitpid(j.pid,NULL,WNOHANG);
+//     if (ended) {
+//         printf("[%d]:pid %d: DONE! %s\n",(*index)+1,j.pid,j.line);
+//         free(j.line);
+//         lkrm(&jobs,index);
+//         (*index)--;
+//     } else {
+//         printf("[%d]:pid %d: %s\n",(*index)+1,j.pid,j.line);
+//     }
+// }
 int cmd_jobs(int argcm, char**argv) {
-    lkfor(&jobs,__print_jobs);
+    node *n=jobs.first;
+    job *j;
+    if (n!=NULL)
+        j=(job*)n->data;
+    size_t i=0;
+    size_t o_i=1;
+    while(n!=NULL) {
+        pid_t ended=waitpid(j->pid,NULL,WNOHANG);
+        n=n->next;
+        if (ended) {
+            printf("[%d]:pid %d: DONE! %s\n",o_i+1,ended,j->line);
+            free(j->line);
+            lkrm(&jobs,i);
+            free(j);
+        } else {
+            printf("[%d]:pid %d: %s\n",o_i+1,j->pid,j->line);
+            i++;
+        }
+        o_i++;
+        if (n!=NULL)
+            j=(job*)n->data;
+    }
     return EXIT_SUCCESS;
 }
 int cmd_help(int argc, char**argv) {
