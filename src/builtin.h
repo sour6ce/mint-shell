@@ -9,6 +9,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <signal.h>
 #include <libgen.h>
 #include <stdlib.h>
 #include <string.h>

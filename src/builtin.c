@@ -4,6 +4,18 @@
 int cd(int argc, char **argv) {
     return chdir(argv[1])!=0;
 }
+void __kill_jobs(size_t *index, node *n) {
+    job j=*(job*)(n->data);
+    pid_t ended=waitpid(j.pid,NULL,WNOHANG);
+    if (ended) {
+        printf("[%d]:pid %d: DONE! %s\n",index+1,j.pid,j.line);
+        free(j.line);
+        lkrm(&jobs,index);
+        (*index)--;
+    } else {
+        kill(j.pid,SIGKILL);
+    }
+}
 int cmd_exit(int argc, char**argv){
     lkfor(&jobs,__kill_jobs);
     exit(EXIT_SUCCESS);
@@ -143,18 +155,6 @@ void __print_jobs(size_t *index, node *n) {
         (*index)--;
     } else {
         printf("[%d]:pid %d: %s\n",index+1,j.pid,j.line);
-    }
-}
-void __kill_jobs(size_t *index, node *n) {
-    job j=*(job*)(n->data);
-    pid_t ended=waitpid(j.pid,NULL,WNOHANG);
-    if (ended) {
-        printf("[%d]:pid %d: DONE! %s\n",index+1,j.pid,j.line);
-        free(j.line);
-        lkrm(&jobs,index);
-        (*index)--;
-    } else {
-        kill(j.pid,SIGKILL);
     }
 }
 int cmd_jobs(int argcm, char**argv) {
