@@ -91,6 +91,7 @@ void *lkrm(lklist *list, size_t index) {
     }
     if(lkhasone(*list) || index<=0) {
         lkquit(list);
+        return;
     }
     node *old=(index>=len)? list->last : lkndat(list,index);
     if (old->next!=NULL){
