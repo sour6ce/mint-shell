@@ -143,6 +143,51 @@ int cmd_jobs(int argcm, char**argv) {
     lkfor(&jobs,__print_jobs);
     return EXIT_SUCCESS;
 }
+int cmd_help(int argc, char**argv) {
+    char *help_name="main";
+
+    if (argc>1) {
+        help_name=argv[1];
+    }
+
+    help_name=strpaste(help_name,".txt",NULL);
+
+    char*help_dir;
+    char*filename=NULL;
+
+    char bin_path[512];
+    for (size_t i=0; i<512 ;i++)
+        bin_path[i]=0;
+    struct stat st;
+
+    readlink("/proc/self/exe",bin_path,512);
+    stat("/proc/self/exe",&st);
+
+    char *temp_dir=dirname(bin_path);
+    char *dir=dirname(temp_dir);
+
+    help_dir=strpaste(dir,"/help/",NULL);
+    filename=strpaste(help_dir,help_name,NULL);
+
+    free(help_dir);
+
+    FILE *text=fopen(filename,"r");
+    free(filename);
+    free(help_name);
+    if (text ==NULL) {
+        printf("There is no help for \"%s\".\n",help_name);
+        return EXIT_FAILURE;
+    } else {
+        char c=fgetc(text);
+        while(c!=EOF) {
+            printf("%c",c);
+            c=fgetc(text);
+        }
+        fclose(text);
+        printf("\n");
+        return 0;
+    }
+}
 char *builtin_name[BI_COUNT]={
     "cd",
     "exit",
@@ -151,7 +196,8 @@ char *builtin_name[BI_COUNT]={
     "history",
     "again",
     "fg",
-    "jobs"
+    "jobs",
+    "help"
 };
 bi_cmd builtin[BI_COUNT]={
     cd,
@@ -161,7 +207,8 @@ bi_cmd builtin[BI_COUNT]={
     cmd_history,
     cmd_again,
     cmd_fg,
-    cmd_jobs
+    cmd_jobs,
+    cmd_help
 };
 
 int get_bi_index(char *cmd_name) {

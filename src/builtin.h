@@ -7,12 +7,15 @@
 #include "cmdexecute.h"
 #include "cmdparse.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <libgen.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
 
-#define BI_COUNT 8
+#define BI_COUNT 9
 
 int cd(int argc, char **argv);
 int cmd_exit(int argc, char**argv);
