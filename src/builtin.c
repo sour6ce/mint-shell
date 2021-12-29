@@ -166,12 +166,12 @@ int cmd_jobs(int argcm, char**argv) {
         pid_t ended=waitpid(j->pid,NULL,WNOHANG);
         n=n->next;
         if (ended) {
-            printf("[%d]:pid %d: DONE! %s\n",o_i+1,ended,j->line);
+            printf("[%d]:pid %d: DONE! %s\n",o_i,ended,j->line);
             free(j->line);
             lkrm(&jobs,i);
             free(j);
         } else {
-            printf("[%d]:pid %d: %s\n",o_i+1,j->pid,j->line);
+            printf("[%d]:pid %d: %s\n",o_i,j->pid,j->line);
             i++;
         }
         o_i++;
