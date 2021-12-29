@@ -164,6 +164,7 @@ cmd_handler execute(cmd *command, int in_fd, int out_fd) {
             if (execvp(command->argv[0],command->argv)<0) { //Execute the simple command
                 fprintf(stderr, "Could not execute the command %s. \n",command->argv[0]);
                 exit(EXIT_FAILURE);
+                exit(EXIT_FAILURE);
             }
         }
     }

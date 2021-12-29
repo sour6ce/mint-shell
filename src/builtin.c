@@ -103,6 +103,7 @@ int cmd_fg(int argc, char**argv) {
     // cmd_handler temp={0,j->pid,NULL};
     // return good_exit(temp);
 
+    p=((job*)jobs.last->data)->pid;
     if(argc>1) {
         errno=0;
         long a=strtol(argv[1],NULL,10);
