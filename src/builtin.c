@@ -71,6 +71,8 @@ int cmd_again(int argc, char**argv) {
     h->cmd_data=NULL;
     *h=execute(main_cmd, STDIN_FILENO, STDOUT_FILENO);
 
+    int stat=EXIT_SUCCESS;
+
     //Check if errored
     if (h->pid==0) {
         fprintf(stderr, "Invalid command: \"%s\".\n",copy);
@@ -88,7 +90,7 @@ int cmd_again(int argc, char**argv) {
                 
                 addjob(j);
             } else {
-                waitpid(h->pid, NULL, 0);
+                stat=good_exit(*h);
                 //fflush(stdout);
                 freecmd(main_cmd);
             }
@@ -100,7 +102,7 @@ int cmd_again(int argc, char**argv) {
     return stat;
 }
 int cmd_fg(int argc, char**argv) {
-    size_t jlen=lklen(&jobs);
+    //size_t jlen=lklen(&jobs);
     //size_t i=jlen-1;
     pid_t p=0;
     // if (argc>1){

@@ -293,7 +293,9 @@ int __catch_red(char *line,char *copy, char*token, char*prev_token) {
 }
 
 cmd *parse(char *line) {
+    char *temp=line;
     size_t line_size=strlen(line)+1;
+    strpeck(temp,&line,NULL,line_size);
     char *bg=tokfindr(line,line_size-1,TOK_BACKGROUND);
 
     if (bg!= NULL)
@@ -345,6 +347,7 @@ cmd *parse(char *line) {
 
         free(ifline);
         free(thenline);
+        free (line);
         if (rr>0) free(elseline);
 
         return condition;
