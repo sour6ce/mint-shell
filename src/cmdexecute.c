@@ -42,8 +42,6 @@ cmd_handler execute(cmd *command, int in_fd, int out_fd) {
         {
             fprintf(stderr,"Failed child process creation. \n");
         } else if (h.pid==0) { //Child process
-            //printf("Complex Child pid:%d with parent: %d.\n",getpid(),getppid());
-            //printf("Info:\n\tinput fd:%d\n\toutput fd:%d\n\tcmd:%s\n",in_fd,out_fd,command->argv[0]);
 
             int ex_status=0;
             if (options&CMD_CHAINEDRIGHT) { //If is chained
@@ -104,8 +102,6 @@ cmd_handler execute(cmd *command, int in_fd, int out_fd) {
 
                 BOOL good=good_exit(ch);
                 if (good) {
-                // waitpid(ch.pid,&ex_status,0);
-                // if ((WIFEXITED(ex_status)&&(!WEXITSTATUS(ex_status)) )) {
                     cmd_handler thenh=execute(_then,in_fd,out_fd);
 
                     ex_status=wait_status(thenh);
@@ -134,8 +130,6 @@ cmd_handler execute(cmd *command, int in_fd, int out_fd) {
         {
             fprintf(stderr,"Failed child process creation. \n");
         } else if (h.pid==0) { //Child process
-            //printf("Simple Child pid:%d with parent: %d.\n",getpid(),getppid());
-            //printf("Info:\n\tinput fd:%d\n\toutput fd:%d\n\tcmd:%s\n",in_fd,out_fd,command->argv[0]);
 
             int fi=-1,fo=-1;
 
@@ -146,7 +140,7 @@ cmd_handler execute(cmd *command, int in_fd, int out_fd) {
             } else {
                 dup2(in_fd,STDIN_FILENO);
             }
-            if (command->options&CMD_EXTOUTPUT) { //TODO: Check why the file is locked on finish
+            if (command->options&CMD_EXTOUTPUT) {
                 if (!(options&CMD_HARDEXTOUTPUT) ) {
                     __enfile(command->extoutput);
                     fo=open(command->extoutput, O_WRONLY);

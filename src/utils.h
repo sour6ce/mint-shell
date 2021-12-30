@@ -1,13 +1,13 @@
 #ifndef _UTILS_H
 #define _UTILS_H
 
-#include "commons.h"
-#include "types.h"
-
 #include <sys/wait.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+#include "commons.h"
+#include "types.h"
 
 typedef size_t range[2];
 

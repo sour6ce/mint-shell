@@ -91,7 +91,6 @@ int cmd_again(int argc, char**argv) {
                 addjob(j);
             } else {
                 stat=good_exit(*h);
-                //fflush(stdout);
                 freecmd(main_cmd);
             }
         } else {
@@ -102,23 +101,7 @@ int cmd_again(int argc, char**argv) {
     return stat;
 }
 int cmd_fg(int argc, char**argv) {
-    //size_t jlen=lklen(&jobs);
-    //size_t i=jlen-1;
     pid_t p=0;
-    // if (argc>1){
-    //     errno=0;
-    //     long a=strtol(argv[1],NULL,10);
-    //     if (errno==0) {
-    //         p=MAX(MIN(jlen-1,a-1),0) ;
-    //     }
-    // }
-
-    // job *j=lkndat(&jobs,i)->data;
-    // lkrm(&jobs,i);
-    // free(j->line);
-    // int status;
-    // cmd_handler temp={0,j->pid,NULL};
-    // return good_exit(temp);
 
     p=((job*)jobs.last->data)->pid;
     if(argc>1) {
@@ -145,18 +128,6 @@ int cmd_fg(int argc, char**argv) {
     } while (actual!=NULL);
     return EXIT_FAILURE;
 }
-// void __print_jobs(size_t *index, node *n) {
-//     job j=*(job*)(n->data);
-//     pid_t ended=waitpid(j.pid,NULL,WNOHANG);
-//     if (ended) {
-//         printf("[%d]:pid %d: DONE! %s\n",(*index)+1,j.pid,j.line);
-//         free(j.line);
-//         lkrm(&jobs,index);
-//         (*index)--;
-//     } else {
-//         printf("[%d]:pid %d: %s\n",(*index)+1,j.pid,j.line);
-//     }
-// }
 int cmd_jobs(int argcm, char**argv) {
     node *n=jobs.first;
     job *j;

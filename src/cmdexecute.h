@@ -1,15 +1,15 @@
 #ifndef _CMDEXECUTE_H
 #define _CMDEXECUTE_H
 
-#include "types.h"
-#include "builtin.h"
-
 #include <sys/wait.h>
 
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+
+#include "types.h"
+#include "builtin.h"
 
 //Check if the handler is from a command that ends without errors. If it is not yet
 //finished wait for it.

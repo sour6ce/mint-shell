@@ -24,14 +24,8 @@ int *mapquote(char *str){
 
 char *tokfind(char *str,size_t n, char *token) {
 
-    //char *copy=NULL;
-    //strpeck(str,&copy,NULL,n);
-
     char *position=str;
 
-    //copy[n]='\0'; //to force the end of the string there
-
-    //int *quote=mapquote(copy);
     int *quote=mapquote(str);
 
     while (TRUE) {
@@ -39,19 +33,15 @@ char *tokfind(char *str,size_t n, char *token) {
         if (position-str>=n) position=NULL;
         if (position==NULL) { //If didn't found anything
             free(quote);
-            //free(copy);
             return NULL;
         }
         if (!quote[position-str]) { //If it found the token and is not in a string
             free(quote);
-            //free(copy);
-            //return str+(position-copy);
             return position;
         }
         position++; //Found the token but is part of a string
     }
     free(quote);
-    //free(copy);
     return NULL; //Shouldn't get here but just in case
 }
 
@@ -245,45 +235,6 @@ void __endlinize(char *line, size_t n) {
         }
     }
 }
-
-// char *__company(char *line, size_t n, char **input, char **output, char **houtput) {
-//     char *copy=line;
-//     //strpeck(line,&copy,NULL,n);
-//
-//     char *in=tokfindr(copy,n,TOK_IN);
-//     if (in!=NULL)
-//         for (size_t i=0; i < TOK_IN_LEN ;i++) {
-//             in[i]='\n';
-//         }
-//     char *hout=tokfindr(copy,n,TOK_HARDOUT);
-//     if (hout!=NULL)
-//         for (size_t i=0; i < TOK_IN_LEN ;i++) {
-//             in[i]='\n';
-//         }
-//     char *out=tokfindr(copy,n,TOK_OUT);
-//     if (out!=NULL)
-//         for (size_t i=0; i < TOK_IN_LEN ;i++) {
-//             in[i]='\n';
-//         }
-//
-//     if (in!=NULL) in+=TOK_IN_LEN;
-//     if (hout!=NULL) houtput+=TOK_HARDOUT_LEN;
-//     if (out!=NULL) out+=TOK_OUT_LEN;
-//
-//     if (hout!=NULL) out=hout;
-//
-//     if (in!=NULL && input!=NULL)
-//     {
-//         __endlinize(in,n-(in-copy));
-//         strpeck(tok,input,NULL,tokfind(in,n-(in-copy),'\n'))
-//     }
-//     if (out!=NULL && input!=NULL)
-//     {
-//         __endlinize(in,n-(in-copy));
-//         strpeck(tok,input,NULL,tokfind(in,n-(in-copy),'\n'))
-//     }
-// }
-
 int __catch_red(char *line,char *copy, char*token, char*prev_token) {
     if (prev_token!=NULL) {
         line+=(prev_token+strlen(prev_token))-copy;
@@ -322,9 +273,6 @@ cmd *parse(char *line) {
             bg[i]=' ';
         }
     }
-
-    // CMDP(left_cmd);
-    // CMDP(right_cmd);
 
     cmd *left_cmd,*right_cmd;
 
@@ -404,8 +352,6 @@ cmd *parse(char *line) {
         } else { //Then it's a normal command
             //Simple command code. Not so simple.
 
-            // LKLIST(primallist);
-            // LKLIST(stillprimallist);
             LKLIST(arglist);
 
             //Copies the line for safe use with strtok
@@ -477,19 +423,6 @@ cmd *parse(char *line) {
                 token=strtok(NULL,"\n");
             }
 
-            // char *bg=tokfindr(prev,strlen(prev),TOK_BACKGROUND);
-
-            // if (bg!=NULL) {
-            //     count--;
-            //     lkrm(&arglist,count);
-            //     if (bg!=prev) {
-            //         char *new_arg=NULL;
-            //         strpeck(prev,&new_arg,NULL, bg-prev);
-            //         free(prev);
-            //         lkappend(&arglist,new_arg);
-            //     }
-            // }
-
             char **args=NEW(char*,count+1);
             
             for (size_t i = 0; i < count; i++)
@@ -513,8 +446,6 @@ cmd *parse(char *line) {
 
             return result_cmd;
 
-            // lkfree(primallist,TRUE);
-            // lkfree(stillprimallist,TRUE);
             lkfree(&arglist,FALSE);
 
             free(map);

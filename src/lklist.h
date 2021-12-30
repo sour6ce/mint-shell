@@ -1,8 +1,8 @@
 #ifndef _LKLIST_H
 #define _LKLIST_H
 
-#include "commons.h"
 #include <stdlib.h>
+#include "commons.h"
 
 //Smart element of the linked list.
 typedef struct node {

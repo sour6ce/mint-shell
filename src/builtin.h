@@ -1,12 +1,6 @@
 #ifndef _BUILTIN_H
 #define _BUILTIN_H
 
-#include "commons.h"
-#include "types.h"
-#include "history.h"
-#include "cmdexecute.h"
-#include "cmdparse.h"
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <signal.h>
@@ -15,6 +9,12 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+
+#include "commons.h"
+#include "types.h"
+#include "history.h"
+#include "cmdexecute.h"
+#include "cmdparse.h"
 
 #define BI_COUNT 9
 
