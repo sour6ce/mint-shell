@@ -160,8 +160,6 @@ int cmd_help(int argc, char**argv) {
         help_name=argv[1];
     }
 
-    help_name=strpaste(help_name,".txt",NULL);
-
     char*help_dir;
     char*filename=NULL;
 
@@ -178,14 +176,15 @@ int cmd_help(int argc, char**argv) {
 
     help_dir=strpaste(dir,"/help/",NULL);
     filename=strpaste(help_dir,help_name,NULL);
+    filename=strpaste(filename,".txt",NULL);
 
     free(help_dir);
 
     FILE *text=fopen(filename,"r");
     free(filename);
-    free(help_name);
     if (text ==NULL) {
         printf("There is no help for \"%s\".\n",help_name);
+        free(help_name);
         return EXIT_FAILURE;
     } else {
         char c=fgetc(text);
@@ -195,6 +194,7 @@ int cmd_help(int argc, char**argv) {
         }
         fclose(text);
         printf("\n");
+        free(help_name);
         return 0;
     }
 }
