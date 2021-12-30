@@ -1,11 +1,47 @@
-El shell contiene todas las funcionalidades básicas.
-Al ejecutar el programa siempre se va a imprimir "my-prompt $".
-Ejecuta comandos e imprime sus salidas.
-Tiene el comando cd el cual cambia el directorio actual.
-Tiene los comandos de redirección de entrada y salida estandar:
-command > file: Toma la salida del comando y la almacena en file, sobreescribiendo esto sobre el contenido de file.
-command >> file: Toma la salida del comando y la almacena en file sin sobreescribir el contenido.
-command < file: Toma el contenido del file y lo usa como entrada del comando.
-Tiene tuberías:
-command1 | command2: La salida del comando 1 funciona como entrada del comando 2.
-Si aparece el caracter "#" el shell ignora todo desde este hasta el final de la línea.
+El shell es capaz de ejecutar comandos simples formados por ejecutables, sus parámetros
+y redirecciones de la entrada y salida.
+
+El programa imprime la dirección del directorio de trabajo actual y procede, recibe la 
+línea de texto escrita por el usuario, elimina los comentarios (todo el texto a
+continuación del caracter "#" hasta el final de la línea) y procede a parsearla para 
+ejecutar el comando, los comandos "simples"(ver "help general") se ejecutan: si es un 
+comando built-in llamando a la función correspondiente, si es un programa externo mediante
+las funciones fork y exec.
+
+Los comandos permiten redirección de la entrada y la salida.
+Al escribir "(<|>|>>) [nombre_archivo]" como parte de los argumentos del comando a 
+ejecutar el shell interpreta esto como una redireccion de entrada (en el caso que sea "<")
+o salida (en el caso que sea ">" o ">>") desde/hacia el archivo nombrado.
+
+Al usar ">": Borra el texto en el archivo destino y escribe la salida del programa. En 
+caso de que el archivo no exista lo crea. Si la ruta es inválida la salida se pierde.
+Al usar "<": Si es un archivo válido el contenido de este pasa a ser la entrada del
+programa, en caso de no ser válido utiliza la entrada por consola normal.
+Al usar ">>": La salida del programa se escribe a continuación del contenido ya existente 
+en el archivo.
+
+El shell también cuenta con soporte para pipes(tuberías). Una línea de comandos con pipes
+es considerado un comando complejo(ver "help general") y se encarga de ejecutar el lado
+izquierdo de la tubería y su salida transmitirla al lado derecho de forma recursiva(ver 
+"help multi-pipe"). Las líneas con tuberías son de la forma "[comando1] | [comando2]". Estos
+comandos no pueden contener cadenas(chains) pues estas tienen menor prioridad que los pipes
+(ver "help chain").
+
+En caso de un comando tener redirecciones y formar parte de una tubería las redirecciones
+tienen prioridad.
+
+Si se anotan más de una redirección se toma la última correspondiente a cada tipo(entrada o
+salida) y el resto se ignoran.
+
+La entrada de comandos permite multilinea mediante el uso del operador "\" al final del 
+comando.
+
+El shell incluye un comando built-in llamado "cd" que permite cambiar el directorio de
+trabajo actual al llamarse de la forma "cd [directorio]" y un comando "exit" que permite
+finalizar la ejecución del shell y no recibe parámetros. 
+Se incluyen los siguientes comandos built-in:
+cd [directorio]: Cambia el directorio de trabajo actual del shell al directorio dado. En
+caso de no de ser un directorio válido se mantiene con el mismo valor.
+exit: Finaliza la ejecución
+Ambos comandos deberían evitar usarse como parte de comandos complejos (ver "help notes" y
+"help general").

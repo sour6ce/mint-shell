@@ -1,0 +1,29 @@
+El funcionamiento del shell se basa en dos tipos de comandos fundamentales, estos son los
+comandos "simples" y "complejos".
+
+Los comandos simples son aquellos que ejecutan "una sola acción", es decir, comandos
+built-in o llamadas a aplicaciones externas. dentro de la sintaxis del comando simple se
+incluyen los argumentos de este y las redirecciones de entrada y salida que tiene. Los
+comandos built-in se ejecutan mediante una llamada a la función correspondiente, el resto
+se ejecutan realizando un fork y llamano a exec.
+
+Los comandos complejos son aquellos que incluyen otros comandos (ya sean a su vez complejos
+o simples en su ejecución), existen tres comandos dentro de esta categoría y son: los pipes,
+las cadenas y los comandos condicionales (ver "help pipes", "help cadenas" y "help if"). La
+principal diferencia en la ejecución de estos comandos radica en que crean más de un proceso
+para la ejecución de los comandos interiores, todos estos procesos son hijos de un proceso
+principal que es el que se asocia con la línea de comando inicial. Como los comandos
+internos pueden a su vez ser complejos la ejecución de estos genera un árbol de procesos.
+Este árbol es bastante desbalanceado, ya que en cadenas y pipes se toma un lado izquierdo
+inicial que consta de un comando irreducible dentro de su tipo y el resto de la línea se
+reduce de manera recursiva quedando el árbol desbalanceado hacia la derecha (no hay que
+preocuparse mucho por eso, para mas detalle ver "help multi-pipe" y "help chain").
+
+Dentro de los tipos de comandos complejos existe cierta prioridad para la ejecución y
+parseo de estos. Esta prioridad se puede definir por niveles donde los comandos que pueden
+formar parte de los del nivel n solo son los de los niveles anteriores.
+Nivel 0: Comandos simples.
+Nivel 1: Pipes, estos solo pueden contener comandos simples.
+Nivel 2: Cadenas, una cadena de comandos puede estar formada por comandos simples o pipes.
+Nivel 3: Condicionales, una condición, a excepción de los anteriores, puede contener tanto
+comandos simples, pipes, cadenas como otras condicionales dentro de los comandos internos.

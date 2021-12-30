@@ -1,0 +1,18 @@
+El shell considera un espacio vacío o una línea vacía un comando válido por tanto este
+puede formar parte de una cadena (ver "help chain") o tubería (ver "help basic").
+
+Por razones particulares de la implementación de la función getline de stdio.h utilizada
+para leer el input del usuario el shell no se comporta de la forma esperada al ejecutarlo
+con una entrada redirigida.
+
+Se debe evitar usar comandos built-in en comandos complejos (ver "help general"), aunque
+comandos como "true" y "false" están pensados con ese objetivo (ver "help if") otros como
+"cd", "exit", "history", "again","jobs" y "fg" están pensados para modificar el estado del
+shell (ver "help basic", "help history" y "help jobs") y por lo tanto pueden tener un 
+comportamiento no esperado debido a que la ejecución de estos se realizaría en un proceso
+distinto copia del shell original.
+
+EL shell reconoce todo lo que esté contenido entre comillas, ya sean dobles o simples como
+un texto literal y puede ser pasado a un comando como un argumento en su totalidad. De los
+operadores utilizados por la sintaxis del shell en la línea de la entrada se utilizan solo 
+los que no forman parte de uno de estos textos.
