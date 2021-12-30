@@ -36,12 +36,9 @@ salida) y el resto se ignoran.
 La entrada de comandos permite multilinea mediante el uso del operador "\" al final del 
 comando.
 
-El shell incluye un comando built-in llamado "cd" que permite cambiar el directorio de
-trabajo actual al llamarse de la forma "cd [directorio]" y un comando "exit" que permite
-finalizar la ejecución del shell y no recibe parámetros. 
 Se incluyen los siguientes comandos built-in:
-cd [directorio]: Cambia el directorio de trabajo actual del shell al directorio dado. En
+    cd [directorio]: Cambia el directorio de trabajo actual del shell al directorio dado. En
 caso de no de ser un directorio válido se mantiene con el mismo valor.
-exit: Finaliza la ejecución
+    exit: Finaliza la ejecución
 Ambos comandos deberían evitar usarse como parte de comandos complejos (ver "help notes" y
 "help general").
