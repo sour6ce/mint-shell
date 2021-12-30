@@ -27,10 +27,10 @@ int cmd_false(int argc, char**argv) {
 }
 void __print_history1(size_t *index, node * n) {
     if(*index!=0)
-        printf("%d:%s\n",*index,(char *)n->data);
+        printf("%lu:%s\n",*index,(char *)n->data);
 }
 void __print_history2(size_t *index, node * n) {
-    printf("%d:%s\n",(*index)+1,(char*)n->data);
+    printf("%lu:%s\n",(*index)+1,(char*)n->data);
 }
 int cmd_history(int argc, char**argv) {
     lkfor(&history,((lklen(&history)<=10)?__print_history2 : __print_history1) );
@@ -139,12 +139,12 @@ int cmd_jobs(int argcm, char**argv) {
         pid_t ended=waitpid(j->pid,NULL,WNOHANG);
         n=n->next;
         if (ended) {
-            printf("[%d]:pid %d: DONE! %s\n",o_i,ended,j->line);
+            printf("[%lu]:pid %d: DONE! %s\n",o_i,ended,j->line);
             free(j->line);
             lkrm(&jobs,i);
             free(j);
         } else {
-            printf("[%d]:pid %d: %s\n",o_i,j->pid,j->line);
+            printf("[%lu]:pid %d: %s\n",o_i,j->pid,j->line);
             i++;
         }
         o_i++;
