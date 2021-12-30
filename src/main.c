@@ -71,10 +71,10 @@ void loop() {
                     addjob(j);
                 } else {
                     waitpid(h->pid, NULL, 0);
-                    freecmd(main_cmd);
                 }
             } else {
             }
+            freecmd(main_cmd);
         }
         free(h);
 

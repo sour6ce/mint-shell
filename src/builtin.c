@@ -184,7 +184,6 @@ int cmd_help(int argc, char**argv) {
     free(filename);
     if (text ==NULL) {
         printf("There is no help for \"%s\".\n",help_name);
-        free(help_name);
         return EXIT_FAILURE;
     } else {
         char c=fgetc(text);
@@ -194,7 +193,6 @@ int cmd_help(int argc, char**argv) {
         }
         fclose(text);
         printf("\n");
-        free(help_name);
         return 0;
     }
 }
