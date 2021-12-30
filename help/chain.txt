@@ -1,7 +1,17 @@
-El shell contiene operadores para encadenar comandos como son:
-command1 ; command2 : Con este operador se pueden ejecutar varios comandos en una sola línea, uno a 
-uno en el orden en que aparecen.
-command1 && command2 : Este operador permite poner varios comandos unidos de forma que el comando n 
-se ejecuta solo si el comando n-1 tiene un exit status satisfactorio.
-command1 || command2: Funciona como operador lógico or, si el primer comando es satisfactorio no 
-hace falta ejecutar el resto de comandos.
+El shell admite el uso de cadenas de comandos.
+
+Una cadena de comandos es un tipo de comando complejo (ver "help general") que de ejecutar
+comandos unos a continuación de otros, su estructura es "[comando1] (; | || | &&) [comando2]"
+
+Según el tipo de operador usado se clasifican de la siguiente forma:
+    Cadena normal(;): Ejecuta cada comando a continuación del otro sin importar el resultado
+de cada uno.
+    Cadena AND(&&): Ejecuta el siguiente comando de la cadena solo si el comando anterior
+retornó sin error, es decir retornó valor TRUE;
+    Cadena OR(||): Ejecuta el siguiente comando de la cadena solo si el comando anterior
+retornó con error(FALSE).
+
+Cada comando parte de la cadena puede contener pipes (ver "help general").
+
+Para la comprobar el estado de retorno de los programas se analizó el entero de estado que
+retorna la función waitpid al usarla en cada paso de la cadena.

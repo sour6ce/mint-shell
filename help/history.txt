@@ -1,5 +1,17 @@
-El shell tiene implementado el historial de comandos.
-Este contiene los comandos "history" y "again":
-history: Imprime un historial de los 10 últimos comandos ejecutados, ordenados y enumerados del 
-más antiguo al más actual. El comando history también se guarda en el historial.
-again <number>: Vuelve a ejecutar el comando <number> de la historia de comandos.
+El shell lleva un historial de los comandos ejecutados.
+
+Este historial guarda hasta un total de 10 comandos, a excepción de los que comienzan con un
+espacio al escribirlos en la entrada. estos comandos pueden consultarse y ejecutarlos
+nuevamente.
+
+El shell incluye los siguientes comandos built-in:
+    history: Imprime un listado con todos los comandos almacenados en el historial.
+    again [número]: Ejecuta de nuevo el comando que ocupa la posición escrita en la lista.
+Si el número es 1 o menor se toma el primer elemento, si el número corresponde al último de
+la lista, es un número mayor a este o no se da un número para la ejecución del comando
+entonces se ejecuta el último de la lista.
+
+Al ejecutar history también este se guarda en el historial.
+
+Al ejecutar again, se guarda en el historial de comandos el comando que se copió en lugar de
+again.

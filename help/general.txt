@@ -17,7 +17,7 @@ internos pueden a su vez ser complejos la ejecución de estos genera un árbol d
 Este árbol es bastante desbalanceado, ya que en cadenas y pipes se toma un lado izquierdo
 inicial que consta de un comando irreducible dentro de su tipo y el resto de la línea se
 reduce de manera recursiva quedando el árbol desbalanceado hacia la derecha (no hay que
-preocuparse mucho por eso, para mas detalle ver "help multi-pipe" y "help chain").
+preocuparse mucho por eso, ver "help multi-pipe" y "help chain").
 
 Dentro de los tipos de comandos complejos existe cierta prioridad para la ejecución y
 parseo de estos. Esta prioridad se puede definir por niveles donde los comandos que pueden
