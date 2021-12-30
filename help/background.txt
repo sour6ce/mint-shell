@@ -15,3 +15,13 @@ en la siguiente ejecución de este comando.
     fg [id_proceso]: Busca el comando ejecutándose en segundo plano con el id escrito y continúa
 su ejecución en primer plano. En caso de no ser un id válido no realiza ninguna acción. El
 id puede omitirse como parámetro y se tomará el id del último proceso en la lista de jobs.
+
+La implementación de los jobs se basa en llevar el registro de la línea de comando junto al
+id del proceso en el que se está ejecutando este en una lista. En la ejecución de comandos
+de este tipo no se ejecuta waitpid en el bucle principal del shell y se acepta directamente
+una nueva línea de comandos.
+
+Al ejecutar el comando "fg" si se ejecuta waitpid sobre el proceso seleccionado y así se
+lleva a primer plano.
+
+Ambos comandos deben evitarse usar como parte de comandos complejos (ver "help notes").
