@@ -5,3 +5,6 @@ Estas líneas son consideradas comandos complejos (ver "help general") y se basa
 ejecución inicial del comando a continuación del operador "if" y comprobar el valor de
 retorno de este, en caso de ser TRUE ejecuta el comando a continuación de el operador "then"
 sino ejecuta el comando a continuación del operador "else" si es que este está definido.
+
+Cada uno de estos comandos puede contener tanto comandos simples como pipes o cadenas (ver
+"help general").

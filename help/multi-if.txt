@@ -1,4 +1,10 @@
-El shell permite anidar operadores if uno dentro de otro.
-Cada if tendría su propio end.
-Ejemplo:
-if cmd1 then cmd2 else if cmd3 then cmd4 else cmd5 end end
+El shell permite que los comandos que formen parte de un comando condicional sean otros
+comandos condicionales(ver "help general").
+
+Esto se hace al definir estos de forma recursiva donde se espera en cada espacio un comando
+con la misma sintaxis que el original.
+
+Para lograr un parseo correcto se implementó un algoritmo similar a unos paréntesis
+balanceados que evaluava los intervalos abiertos en cada posición de la línea de comandos
+para así encontrar el los operadores if/then/else/end exteriores y parsear recursivamente
+los intervalos para obtener información de los comandos interiores.

@@ -15,3 +15,7 @@ Cada comando parte de la cadena puede contener pipes (ver "help general").
 
 Para la comprobar el estado de retorno de los programas se analizó el entero de estado que
 retorna la función waitpid al usarla en cada paso de la cadena.
+
+Al parsear el comando más a la izquierda en la cadena tiene prioridad y se expresa entonces
+como una cadena entre este comando y todo el lado derecho, es decir, el resto de la cadena
+original(ver "help general").

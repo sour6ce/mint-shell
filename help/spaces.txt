@@ -1,1 +1,8 @@
-El shell permite cualquier cantidad de espacios entre comandos y parámetros.
+El shell permite cualquier cantidad de espacios entre comandos y operadores, incluyendo
+la posibilidad que de que no haya espacios en absoluto.
+
+Esto es posible hacerlo al realizar búsqueda de substrings para encontrar los operadores de
+la línea de comandos en lugar de la función strtok. La única limitación la tiene el operador
+& al final de la línea para los procesos en segundo plano (ver "help background"), el cual 
+debe tener al menos un espacio antes de él para que funciones correctamente(esto es para 
+evitar confuciones con el operador &&).

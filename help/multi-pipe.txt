@@ -1,1 +1,6 @@
-El shel tiene la implementación de tuberías múltiples.
+El shell permite ejecutar pipes de más de dos comandos.
+
+Para poder implementar esta funcionalidad se utilizó un sistema similar al de las cadenas.
+En una serie de comandos, los cuales deben ser simples, toma prioridad el primer comando 
+expresándose entonces la línea de forma recursiva como un pipe entre ese comando y todo el
+lado derecho, es decir, el resto de la línea del pipe (ver "help general").
